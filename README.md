@@ -2,7 +2,6 @@
 
 *A Modern Toolkit for Cutting-Edge Econometric Analysis*
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/repo?style=social)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
 ![R](https://img.shields.io/badge/R-4.3%2B-276DC3?logo=r)
 ![LaTeX](https://img.shields.io/badge/LaTeX-Typesetting-008080?logo=latex)
