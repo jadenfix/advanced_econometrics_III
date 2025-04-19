@@ -65,3 +65,28 @@ def heckman_two_step(y, X, selection, instruments):
     X_aug = np.column_stack([X, mills])
     return OLS(y, X_aug).fit()
 ```
+# Heckman Selection Model in R
+
+```r
+# Heckman Two-Step Estimation in R
+library(sampleSelection)
+
+heckman_2step <- function(formula_outcome, formula_selection, data) {
+  # First stage: Probit selection equation
+  # Second stage: Outcome equation with inverse Mills ratio
+  heckit(
+    selection = formula_selection,
+    outcome = formula_outcome,
+    data = data,
+    method = "2step"
+  )
+}
+
+# Example usage:
+# model <- heckman_2step(
+#   formula_outcome = wage ~ education + experience,
+#   formula_selection = participate ~ education + age + children,
+#   data = women_data
+# )
+# summary(model)
+```
