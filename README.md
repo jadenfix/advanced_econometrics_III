@@ -8,6 +8,14 @@
 
 This repository contains implementations, lecture notes, and applications from an advanced graduate econometrics course, covering modern techniques beyond the classical linear model.
 
+## Verified workflow demo
+
+![Advanced Econometrics III bounded workflow](docs/demo/advanced-econometrics-iii-demo.gif)
+
+[MP4 version](docs/demo/advanced-econometrics-iii-demo.mp4) · [Exact capture receipt](docs/demo/capture.json)
+
+The demo replays the committed birthweight notebook on the documented 2,000-row bounded sample, runs the regression suite, and reports the actual machine-readable receipt. It is a reproducible coursework exercise—not a validated causal, clinical, policy, forecasting, or performance result. The media verifier pins every runtime input to the recorded source commit and fully decodes the published GIF and MP4.
+
 ---
 
 ## 📚 Core Topics
@@ -102,4 +110,13 @@ python run_research.py econometrics_III.ipynb
 
 The bounded sample is explicitly labeled smoke-only. Exact Mahalanobis matching uses whitening and a spatial index; the binary-treatment weighted quantile fit uses exact weighted group quantiles instead of a nonsmooth quasi-Newton optimization. Matching among treated observations estimates ATT, not population ATE. Identification still requires conditional exchangeability, overlap and correctly specified models; the coursework selection correction uses birthweight levels with a normal inverse Mills ratio and is not a validated structural causal estimator. Other notebooks require original missing inputs listed in REPRODUCIBILITY.md.
 
+The selection-control exercise uses the latent probit index and the signed generalized residual for both observed treatment groups. It does not feed predicted probabilities through the normal CDF a second time. Tail ratios are evaluated in log space so extreme but finite indices remain finite.
+
 Verification: `python -m unittest discover -s tests -v` asserts original scalar matching indices, outcomes and ATT on tied fixtures and checks random non-tied matching parity. Weighted quantiles minimize the original check-loss objective; this is a deliberate solver correction replacing potentially failed nonsmooth L-BFGS steps, not a claim that its fitted coefficients match failed iterations. At nonunique weighted quantile optima, the left observed quantile is selected deterministically.
+
+Regenerate and verify the published demo from a clean source commit:
+
+```bash
+python scripts/generate_demo.py --source-sha "$(git rev-parse HEAD)"
+python scripts/verify_demo.py
+```
