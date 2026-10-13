@@ -5,6 +5,28 @@ from scipy.spatial import cKDTree
 from scipy.spatial.distance import cdist
 
 class NumericalParity(unittest.TestCase):
+    def test_probit_generalized_residual_uses_linear_index_and_both_groups(self):
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+        from numerical import probit_generalized_residual
+        eta=np.array([-40.,-2.,0.,2.,40.])
+        selected=probit_generalized_residual(eta,np.ones(len(eta)))
+        not_selected=probit_generalized_residual(eta,np.zeros(len(eta)))
+        self.assertTrue(np.isfinite(selected).all())
+        self.assertTrue(np.isfinite(not_selected).all())
+        np.testing.assert_allclose(selected, -not_selected[::-1], rtol=1e-12, atol=1e-12)
+        self.assertAlmostEqual(selected[2],np.sqrt(2/np.pi))
+        self.assertAlmostEqual(not_selected[2],-np.sqrt(2/np.pi))
+
+    def test_probit_generalized_residual_rejects_invalid_inputs(self):
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+        from numerical import probit_generalized_residual
+        with self.assertRaisesRegex(ValueError,"0 and 1"):
+            probit_generalized_residual([0.],[2])
+        with self.assertRaisesRegex(ValueError,"finite"):
+            probit_generalized_residual([np.inf],[1])
+
     def test_whitened_matching_equals_pairwise_distance(self):
         rng=np.random.default_rng(42)
         controls=rng.normal(size=(25,4)); treated=rng.normal(size=(12,4))
