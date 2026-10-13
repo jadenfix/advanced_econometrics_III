@@ -11,7 +11,10 @@ class NumericalParity(unittest.TestCase):
         inv=np.linalg.inv(np.cov(np.vstack([controls,treated]),rowvar=False))
         expected=cdist(treated,controls,metric="mahalanobis",VI=inv).argmin(axis=1)
         whitening=np.linalg.cholesky(inv)
-        _,actual=cKDTree(controls@whitening).query(treated@whitening)
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+        from numerical import match_mahalanobis
+        actual=match_mahalanobis(treated,controls,inv)
         np.testing.assert_array_equal(actual,expected)
     def test_weighted_quantile_minimizes_original_check_loss(self):
         d=json.loads((Path(__file__).resolve().parents[1]/"econometrics_III.ipynb").read_text())
@@ -24,10 +27,24 @@ class NumericalParity(unittest.TestCase):
             def loss(q):
                 r=y-q;return np.sum(w*np.where(r>=0,tau*r,(tau-1)*r))
             self.assertAlmostEqual(loss(q),min(loss(v) for v in y))
-    def test_matching_ties_preserve_minimum_distance(self):
-        controls=np.array([[1.,0.],[-1.,0.],[2.,0.]])
-        distance,index=cKDTree(controls).query([[0.,0.]])
-        self.assertEqual(distance[0],1.)
-        self.assertIn(index[0],[0,1])
+    def test_tied_matching_preserves_original_outcomes_and_att(self):
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+        from numerical import match_mahalanobis
+        controls=np.array([[1.,0.],[-1.,0.],[1.,0.],[2.,0.]])
+        treated=np.array([[0.,0.],[1.,0.],[2.,0.]])
+        inv=np.eye(2)
+        expected=[]
+        for row in treated:
+            distances=[]
+            for control in controls:
+                delta=row-control
+                distances.append(np.sqrt(np.dot(np.dot(delta,inv),delta.T)))
+            expected.append(int(np.argmin(distances)))
+        actual=match_mahalanobis(treated,controls,inv)
+        np.testing.assert_array_equal(actual,expected)
+        outcomes=np.array([10.,90.,500.,20.])
+        np.testing.assert_array_equal(outcomes[actual],outcomes[expected])
+        self.assertEqual(float(np.mean(np.array([30.,40.,50.])-outcomes[actual])),float(np.mean(np.array([30.,40.,50.])-outcomes[expected])))
 
 if __name__=="__main__": unittest.main()
