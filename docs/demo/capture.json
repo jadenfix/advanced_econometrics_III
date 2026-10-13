@@ -1,0 +1,67 @@
+{
+  "recorded_source_sha": "63bcded128dee7e15f5661f51533cdb2bf8fdbcf",
+  "recorded_source_tree": "e16daf6cdd34d0b75a934c3c8e960b88bf2cf52b",
+  "runtime_input_blobs": {
+    "econometrics_III.ipynb": "4e6dc2f88aca0f57df9373491131bb0c372ee66e",
+    "numerical.py": "378325174fed46e6d512746953b1d81cb7cd6c4f",
+    "run_research.py": "fcf2fb270a9873dd0b05b1b1765afe3844b931f2",
+    "paeco526_take_home_final.csv": "d23b0e3b4b7ace2514698373ec815be35788ca16",
+    "requirements.txt": "2336b5409d2d19b7b03cac4e5bcf8c4bc2c08942",
+    "tests/test_numerics.py": "e02ce910e549a3be2f73dd8563b1a3fad7029ae7",
+    "tests/test_workflow.py": "874f3cb7d9d5cb8be95174d2acfc632be5884beb",
+    "scripts/generate_demo.py": "e48b5f8cfb3e830faf65ea534d4d5024287d1976",
+    "scripts/verify_demo.py": "efd83bb51249f242417ddd149122f14fa2df930f"
+  },
+  "workflow": "RESEARCH_MAX_ROWS=2000 python run_research.py econometrics_III.ipynb",
+  "tests": "python -m unittest discover -s tests -v",
+  "receipt": {
+    "notebook": "econometrics_III.ipynb",
+    "executed_cells": [
+      2,
+      4,
+      7,
+      10,
+      14,
+      17,
+      20,
+      23,
+      26,
+      29,
+      32,
+      35,
+      40,
+      46
+    ],
+    "elapsed_seconds": 5.05779784299375,
+    "seed": 42,
+    "sample_controls": {
+      "RESEARCH_MAX_ROWS": "2000"
+    },
+    "scope": "Committed birthweight dataset (full default; RESEARCH_MAX_ROWS explicitly selects a smoke subset); original OLS, propensity scores, weighting, matching, quantile and selection equations. Associations and treatment effects require the coursework identification assumptions.",
+    "model_results": {
+      "sample_rows": 2000,
+      "tobacco_share": 0.1825,
+      "selection_index_min": -2.1084235699016354,
+      "selection_index_max": 2.375151083921473,
+      "generalized_residual_min": -1.5184780494151033,
+      "generalized_residual_max": 2.162997991096527,
+      "control_function_tobacco_coefficient": 55.553930599387286,
+      "scope": "Coursework control-function estimate; not a validated causal or policy effect."
+    }
+  },
+  "artifacts": {
+    "advanced-econometrics-iii-demo.gif": {
+      "bytes": 745235,
+      "sha256": "74b9747f9c7f28273cbcf55fc16a49bf68bb8d12601abc02423fe47ce9c506d6"
+    },
+    "advanced-econometrics-iii-demo.mp4": {
+      "bytes": 253431,
+      "sha256": "fb22956aae76a3dc6dd8fdc429443b3153ad1acdcda924dae1038e82a55113d7"
+    },
+    "poster.png": {
+      "bytes": 30942,
+      "sha256": "b93a54e3f4a04126f51b660e41959730be1a8bbd9a3e1e91ec1d6daa8d4e3ea8"
+    }
+  },
+  "scope": "Committed birthweight data; deterministic bounded coursework replay. No causal, clinical, policy, forecast, or performance claim."
+}
