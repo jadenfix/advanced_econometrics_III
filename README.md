@@ -90,3 +90,16 @@ heckman_2step <- function(formula_outcome, formula_selection, data) {
 # )
 # summary(model)
 ```
+
+## Execute the committed birthweight workflow
+
+```bash
+pip install -r requirements.txt
+RESEARCH_MAX_ROWS=2000 python run_research.py econometrics_III.ipynb
+# Full study (100,000 committed observations; more expensive):
+python run_research.py econometrics_III.ipynb
+```
+
+The bounded sample is explicitly labeled smoke-only. Exact Mahalanobis matching uses whitening and a spatial index; the binary-treatment weighted quantile fit uses exact weighted group quantiles instead of a nonsmooth quasi-Newton optimization. Matching among treated observations estimates ATT, not population ATE. Identification still requires conditional exchangeability, overlap and correctly specified models; the coursework selection correction uses birthweight levels with a normal inverse Mills ratio and is not a validated structural causal estimator. Other notebooks require original missing inputs listed in REPRODUCIBILITY.md.
+
+Verification: `python -m unittest discover -s tests -v` asserts original scalar matching indices, outcomes and ATT on tied fixtures and checks random non-tied matching parity. Weighted quantiles minimize the original check-loss objective; this is a deliberate solver correction replacing potentially failed nonsmooth L-BFGS steps, not a claim that its fitted coefficients match failed iterations. At nonunique weighted quantile optima, the left observed quantile is selected deterministically.
