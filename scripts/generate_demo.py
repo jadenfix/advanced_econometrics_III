@@ -174,7 +174,7 @@ def main():
         command(
             "ffmpeg", "-y", "-loglevel", "error", "-framerate", str(fps),
             "-i", str(frames / "frame-%04d.png"), "-vf",
-            "fps=10,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer",
+            "fps=8,scale=800:-2:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64[p];[s1][p]paletteuse=dither=bayer",
             str(OUTPUT / "advanced-econometrics-iii-demo.gif"),
         )
 
